@@ -72,34 +72,24 @@ class Vista:
     def mostrar_mensaje(self, mensaje):
         print(mensaje)
 
-    def graficar_datos(self, datos):
-        media = np.mean(datos)
-        desviacion_estandar = np.std(datos)
-        
+    def graficar_datos(self, datos, media, desviacion):
         plt.figure(figsize=(8, 5))
-        
-        # Graficar los puntos del dataset
         plt.plot(datos, marker='o', linestyle='-', label='Datos')
-        
-        # Graficar la media
         plt.axhline(media, color='red', linestyle='--', label=f'Media: {media:.2f}')
-        
-        # Graficar las líneas para la desviación estándar (media ± desviación estándar)
-        plt.axhline(media + desviacion_estandar, color='green', linestyle='--', label=f'Media + 1 Desviación Estándar')
-        plt.axhline(media - desviacion_estandar, color='green', linestyle='--', label=f'Media - 1 Desviación Estándar')
-        
-        # Añadir título, etiquetas y leyenda
+        plt.axhline(media + desviacion, color='green', linestyle='--', label=f'Media + 1 Desv.')
+        plt.axhline(media - desviacion, color='green', linestyle='--', label=f'Media - 1 Desv.')
+
         plt.title("Datos, Media y Desviación Estándar")
         plt.xlabel("Índice")
         plt.ylabel("Valor")
         plt.legend()
-        
-        # Mostrar cuadrícula y ajustar el diseño
         plt.grid(True)
         plt.tight_layout()
-        
-        # Mostrar el gráfico
         plt.show()
 
+
     def mostrar_datos(self, resultados):
-        self.mostrar_tabla(resultados)  # Usamos la función auxiliar para mostrar los registros completos
+        if resultados:
+            self.mostrar_tabla(resultados)  # Usamos la función auxiliar para mostrar los registros completos
+        else:
+            self.mostrar_mensaje("No hay registros disponibles para mostrar.")
