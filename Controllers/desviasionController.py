@@ -27,11 +27,11 @@ class Controlador:
 
                 # Calcular la desviación estándar y mostrar el resultado
                 media, desviacion = self.modelo.calcular_manual()
-                registro = self.modelo.obtener_ultimo()
-                self.vista.mostrar_resultado(registro)
-                
+
                 # Guardar solo la media y la desviación estándar en la base de datos
                 self.modelo.guardar(media, desviacion)
+                registro = self.modelo.obtener_ultimo()
+                self.vista.mostrar_resultado(registro)
 
             # Opción 2: Calcular desviación estándar usando numpy
             elif opcion == "2":
@@ -49,10 +49,18 @@ class Controlador:
 
             # Opción 3: Mostrar gráfica de los datos
             elif opcion == "3":
-                if self.modelo.datos:
-                    self.vista.graficar_datos(self.modelo.datos)
+                ultimo_registro = self.modelo.obtener_ultimo()
+                if ultimo_registro:
+                    media = float(ultimo_registro[0][1])
+                    desviacion = float(ultimo_registro[0][2])
+                    datos = self.modelo.datos  # Solo si guardaste los datos originales
+
+                    if datos:
+                        self.vista.graficar_datos(datos, media, desviacion)
+                    else:
+                        self.vista.mostrar_mensaje("No hay datos originales para graficar. Solo se guardaron los resultados.")
                 else:
-                    self.vista.mostrar_mensaje("Primero debes calcular la desviación para tener datos que graficar.")
+                    self.vista.mostrar_mensaje("No hay registros guardados para graficar.")
 
             # Opción 4: Ver registros 
             elif opcion == "4":
